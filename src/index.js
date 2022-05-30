@@ -12,7 +12,7 @@ export default (filePath1, filePath2) => {
   const obj2 = parseJsonData(filePath2);
   const [keys1, keys2] = [_.keys(obj1), _.keys(obj2)];
   const uniqKeys = _.union(keys1, keys2).slice().sort();
-  const newObj = uniqKeys.reduce((newObj, key) => {
+  const resultObj = uniqKeys.reduce((newObj, key) => {
     if (_.has(obj1, key) && !_.has(obj2, key)) {
       newObj[`- ${key}`] = obj1[key];
     }
@@ -28,13 +28,12 @@ export default (filePath1, filePath2) => {
         newObj[`+ ${key}`] = obj2[key];
       }
     }
-    return newObj;
+    return resultObj;
   }, {});
-  const string =
-    _.keys(newObj).reduce((acc, string) => {
-      const newAcc = acc + `  ${string}: ${newObj[string]}\n`;
-      return newAcc;
-    }, '{\n') + '}';
+  const resultString = `${_.keys(resultObj).reduce((acc, string) => {
+    const newAcc = `${acc}  ${string}: ${resultObj[string]}\n`;
+    return newAcc;
+  }, '{\n')}}`;
 
-  console.log(string);
+  console.log(resultString);
 };
