@@ -7,7 +7,7 @@
   },
   "main": "./src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   "type": "module",
   "homepage": "https://github.com/hhlwt/frontend-project-lvl2#readme",
   "dependencies": {
+    "@jest/globals": "^28.1.0",
     "commander": "^9.2.0",
     "lodash": "^4.17.21"
   },

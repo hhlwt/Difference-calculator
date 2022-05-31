@@ -28,7 +28,7 @@ export default (filePath1, filePath2) => {
         newObj[`+ ${key}`] = obj2[key];
       }
     }
-    return resultObj;
+    return newObj;
   }, {});
   const resultString = `${_.keys(resultObj).reduce((acc, string) => {
     const newAcc = `${acc}  ${string}: ${resultObj[string]}\n`;
