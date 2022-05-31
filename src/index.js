@@ -35,5 +35,5 @@ export default (filePath1, filePath2) => {
     return newAcc;
   }, '{\n')}}`;
 
-  console.log(resultString);
+  return resultString;
 };
