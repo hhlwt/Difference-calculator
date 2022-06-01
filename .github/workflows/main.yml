@@ -4,17 +4,15 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
+      - name: first
       - uses: actions/checkout@v2
       - run: make install
       - run: make lint
       - run: make test
       - name: Test & publish code coverage
-        # Publish code coverage on Code Climate
-        # https://github.com/paambaati/codeclimate-action
-        uses: paambaati/codeclimate-action@v3
-        # Add Code Climate secret key
+        uses: paambaati/codeclimate-action@v3.0.0
         env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+          CC_TEST_REPORTER_ID: 945365d1a6b8f4d76a336922cb44e0a1808540aa069489e376d7467212ea959c
         with:
           coverageCommand: make test
           debug: true
