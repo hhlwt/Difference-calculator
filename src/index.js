@@ -1,15 +1,9 @@
-import fs from 'fs';
 import _ from 'lodash';
-
-const parseJsonData = (filePath) => {
-  const jsonData = fs.readFileSync(filePath, 'utf-8');
-  const parsedData = JSON.parse(jsonData);
-  return parsedData;
-};
+import parseFiles from './parsers.js';
 
 export default (filePath1, filePath2) => {
-  const obj1 = parseJsonData(filePath1);
-  const obj2 = parseJsonData(filePath2);
+  const obj1 = parseFiles(filePath1);
+  const obj2 = parseFiles(filePath2);
   const [keys1, keys2] = [_.keys(obj1), _.keys(obj2)];
   const uniqKeys = _.union(keys1, keys2).slice().sort();
   const resultObj = uniqKeys.reduce((newObj, key) => {
