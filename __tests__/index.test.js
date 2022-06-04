@@ -19,3 +19,8 @@ test('compare yml', () => {
   const expectedYml = readFile('expected_file.txt');
   expect(genDiff('./__fixtures__/file3.yml', './__fixtures__/file4.yml')).toBe(expectedYml);
 });
+
+test('compare json/yml', () => {
+  const expectedJson = readFile('expected_file.txt');
+  expect(genDiff('./__fixtures__/file1.json', './__fixtures__/file4.yml')).toBe(expectedJson);
+});
