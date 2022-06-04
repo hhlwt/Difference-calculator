@@ -34,13 +34,20 @@ export default (filePath1, filePath2) => {
   };
 
   const newObj = compareObjects(obj1, obj2);
-  return newObj;
+
+  const format = (obj, replacer = '  ', replacersCount = 1) => {
+    const iter = (currentValue, depth = 1) => {
+      if (!_.isObject(currentValue)) {
+        return String(currentValue);
+      }
+      const indent = replacer.repeat(depth * replacersCount);
+      const bracketIndent = replacer.repeat((depth - 1) * replacersCount);
+      const valuesArray = Object.entries(currentValue).map(([key, value]) => `${indent}${key}: ${iter(value, depth + 1)}`);
+      return ['{', ...valuesArray, `${bracketIndent}}`].join('\n');
+    };
+    return iter(obj);
+  };
+
+  const resultString = format(newObj);
+  return resultString;
 };
-
-// }, {});
-// const resultString = `${_.keys(resultObj).reduce((acc, string) => {
-//   const newAcc = `${acc}  ${string}: ${resultObj[string]}\n`;
-//   return newAcc;
-// }, '{\n')}}`;
-
-// return resultString;
