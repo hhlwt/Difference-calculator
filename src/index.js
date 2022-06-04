@@ -5,7 +5,7 @@ export default (filePath1, filePath2) => {
   const obj1 = parseFiles(filePath1);
   const obj2 = parseFiles(filePath2);
 
-  const compareObjects = (firstObj, secondObj) => {
+  const getDiff = (firstObj, secondObj) => {
     const [keys1, keys2] = [_.keys(firstObj), _.keys(secondObj)];
     const uniqKeys = _.union(keys1, keys2).slice().sort();
 
@@ -18,7 +18,7 @@ export default (filePath1, filePath2) => {
       }
       if (_.has(firstObj, key) && _.has(secondObj, key)) {
         if (_.isObject(firstObj[key]) && _.isObject(secondObj[key])) {
-          const objValue = compareObjects(firstObj[key], secondObj[key]);
+          const objValue = getDiff(firstObj[key], secondObj[key]);
           accObj[`  ${key}`] = objValue;
         } else if (firstObj[key] !== secondObj[key]) {
           accObj[`- ${key}`] = firstObj[key];
@@ -33,7 +33,7 @@ export default (filePath1, filePath2) => {
     return resultObj;
   };
 
-  const newObj = compareObjects(obj1, obj2);
+  const newObj = getDiff(obj1, obj2);
 
   const format = (obj, replacer = '  ', replacersCount = 1) => {
     const iter = (currentValue, depth = 1) => {
@@ -42,7 +42,7 @@ export default (filePath1, filePath2) => {
       }
       const indent = replacer.repeat(depth * replacersCount);
       const bracketIndent = replacer.repeat((depth - 1) * replacersCount);
-      const valuesArray = Object.entries(currentValue).map(([key, value]) => `${indent}${key}: ${iter(value, depth + 1)}`);
+      const valuesArray = Object.entries(currentValue).map(([key, value]) => `${indent}${(key.startsWith(' ')) || key.startsWith('+') || key.startsWith('-') ? key : `  ${key}`}: ${iter(value, depth + 2)}`);
       return ['{', ...valuesArray, `${bracketIndent}}`].join('\n');
     };
     return iter(obj);
