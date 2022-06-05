@@ -14,6 +14,8 @@ export const stylish = (obj, replacer = '  ', replacersCount = 1) => {
   return iter(obj);
 };
 
+export const plain = () => 'Hello!';
+
 export default (filePath1, filePath2, format = stylish) => {
   const obj1 = parseFiles(filePath1);
   const obj2 = parseFiles(filePath2);
