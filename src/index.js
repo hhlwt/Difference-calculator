@@ -1,7 +1,20 @@
 import _ from 'lodash';
 import parseFiles from './parsers.js';
 
-export default (filePath1, filePath2) => {
+export const stylish = (obj, replacer = '  ', replacersCount = 1) => {
+  const iter = (currentValue, depth = 1) => {
+    if (!_.isObject(currentValue)) {
+      return String(currentValue);
+    }
+    const indent = replacer.repeat(depth * replacersCount);
+    const bracketIndent = replacer.repeat((depth - 1) * replacersCount);
+    const valuesArray = Object.entries(currentValue).map(([key, value]) => `${indent}${(key.startsWith(' ')) || key.startsWith('+') || key.startsWith('-') ? key : `  ${key}`}: ${iter(value, depth + 2)}`);
+    return ['{', ...valuesArray, `${bracketIndent}}`].join('\n');
+  };
+  return iter(obj);
+};
+
+export default (filePath1, filePath2, format = stylish) => {
   const obj1 = parseFiles(filePath1);
   const obj2 = parseFiles(filePath2);
 
@@ -34,20 +47,6 @@ export default (filePath1, filePath2) => {
   };
 
   const newObj = getDiff(obj1, obj2);
-
-  const format = (obj, replacer = '  ', replacersCount = 1) => {
-    const iter = (currentValue, depth = 1) => {
-      if (!_.isObject(currentValue)) {
-        return String(currentValue);
-      }
-      const indent = replacer.repeat(depth * replacersCount);
-      const bracketIndent = replacer.repeat((depth - 1) * replacersCount);
-      const valuesArray = Object.entries(currentValue).map(([key, value]) => `${indent}${(key.startsWith(' ')) || key.startsWith('+') || key.startsWith('-') ? key : `  ${key}`}: ${iter(value, depth + 2)}`);
-      return ['{', ...valuesArray, `${bracketIndent}}`].join('\n');
-    };
-    return iter(obj);
-  };
-
   const resultString = format(newObj);
   return resultString;
 };
