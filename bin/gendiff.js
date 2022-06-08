@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import genDiff, { stylish } from '../src/index.js';
+import genDiff, { stylish, plain } from '../src/index.js';
 
 const program = new Command();
 
@@ -14,7 +14,7 @@ program
     const { format } = option;
     switch (format) {
       case 'plain':
-        console.log('Hello!');
+        console.log(genDiff(filepath1, filepath2, plain));
         break;
       default:
         console.log(genDiff(filepath1, filepath2, stylish));
