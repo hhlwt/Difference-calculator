@@ -44,39 +44,50 @@ export const plain = (obj) => {
   return iter(obj);
 };
 
-export default (filePath1, filePath2, format = stylish) => {
+export default (filePath1, filePath2) => {
   const obj1 = parseFiles(filePath1);
   const obj2 = parseFiles(filePath2);
 
   const getDiff = (firstObj, secondObj) => {
     const [keys1, keys2] = [_.keys(firstObj), _.keys(secondObj)];
     const uniqKeys = _.union(keys1, keys2).slice().sort();
-
-    const resultObj = uniqKeys.reduce((accObj, key) => {
+    const tree = uniqKeys.map((key) => {
+      const node = {};
       if (_.has(firstObj, key) && !_.has(secondObj, key)) {
-        accObj[`- ${key}`] = firstObj[key];
+        node[key] = {
+          deletedValue: firstObj[key],
+          status: 'deleted',
+        };
       }
       if (!_.has(firstObj, key) && _.has(secondObj, key)) {
-        accObj[`+ ${key}`] = secondObj[key];
+        node[key] = {
+          addedValue: secondObj[key],
+          status: 'added',
+        };
       }
       if (_.has(firstObj, key) && _.has(secondObj, key)) {
         if (_.isObject(firstObj[key]) && _.isObject(secondObj[key])) {
           const objValue = getDiff(firstObj[key], secondObj[key]);
-          accObj[`${key}`] = objValue;
+          node[key] = objValue;
         } else if (firstObj[key] !== secondObj[key]) {
-          accObj[`- ${key}`] = firstObj[key];
-          accObj[`+ ${key}`] = secondObj[key];
+          node[key] = {
+            previousValue: firstObj[key],
+            currentValue: secondObj[key],
+            status: 'modified',
+          };
         }
         if (firstObj[key] === secondObj[key]) {
-          accObj[`${key}`] = secondObj[key];
+          node[key] = {
+            currentValue: secondObj[key],
+            status: 'same value',
+          };
         }
       }
-      return accObj;
-    }, {});
-    return resultObj;
+      return node;
+    });
+    return tree;
   };
 
-  const newObj = getDiff(obj1, obj2);
-  const resultString = format(newObj);
-  return resultString;
+  const resultTree = getDiff(obj1, obj2);
+  return resultTree;
 };
