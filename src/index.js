@@ -54,33 +54,32 @@ export default (filePath1, filePath2) => {
     const tree = uniqKeys.map((key) => {
       const node = {};
       if (_.has(firstObj, key) && !_.has(secondObj, key)) {
-        node[key] = {
-          deletedValue: firstObj[key],
-          status: 'deleted',
-        };
+        node.key = key;
+        node.type = 'deleted';
+        node.value = firstObj[key];
       }
       if (!_.has(firstObj, key) && _.has(secondObj, key)) {
-        node[key] = {
-          addedValue: secondObj[key],
-          status: 'added',
-        };
+        node.key = key;
+        node.type = 'added';
+        node.value = secondObj[key];
       }
       if (_.has(firstObj, key) && _.has(secondObj, key)) {
         if (_.isObject(firstObj[key]) && _.isObject(secondObj[key])) {
           const objValue = getDiff(firstObj[key], secondObj[key]);
-          node[key] = objValue;
+          node.key = key;
+          node.type = '';
+          node.value = objValue;
         } else if (firstObj[key] !== secondObj[key]) {
-          node[key] = {
+          node.key = key;
+          node.type = 'changed';
+          node.value = {
             previousValue: firstObj[key],
             currentValue: secondObj[key],
-            status: 'modified',
           };
         }
         if (firstObj[key] === secondObj[key]) {
-          node[key] = {
-            currentValue: secondObj[key],
-            status: 'same value',
-          };
+          node.key = key;
+          node.type = 'unchanged';
         }
       }
       return node;
