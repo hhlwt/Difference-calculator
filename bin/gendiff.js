@@ -19,6 +19,6 @@ program
     //   default:
     //     console.log(genDiff(filepath1, filepath2, stylish));
     // }
-    console.log(JSON.stringify(genDiff(filepath1, filepath2), null, 4));
+    console.log(genDiff(filepath1, filepath2));
   })
   .parse(process.argv);

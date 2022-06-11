@@ -1,50 +1,33 @@
 import _ from 'lodash';
 import parseFiles from './parsers.js';
 
-export const stylish = (obj, replacer = '  ', replacersCount = 1) => {
-  const iter = (currentValue, depth = 1) => {
-    if (!_.isObject(currentValue)) {
-      return String(currentValue);
-    }
+export const stylish = (tree, replacer = '  ', replacersCount = 1) => {
+  const iter = (currentNode, depth = 1) => {
     const indent = replacer.repeat(depth * replacersCount);
     const bracketIndent = replacer.repeat((depth - 1) * replacersCount);
-    const valuesArray = Object.entries(currentValue).map(([key, value]) => `${indent}${key.startsWith('+') || key.startsWith('-') ? key : `  ${key}`}: ${iter(value, depth + 2)}`);
-    return ['{', ...valuesArray, `${bracketIndent}}`].join('\n');
-  };
-  return iter(obj);
-};
-
-export const plain = (obj) => {
-  const iter = (object) => {
-    const valuesArray = Object.entries(object).map(([key, value], index, array) => {
-      const currentKey = key;
-      const currentValue = value;
-      const previousKey = array[index - 1] ? array[index - 1][0] : '';
-      const previousValue = array[index - 1] ? array[index - 1][1] : '';
-      const nextKey = array[index + 1] ? array[index + 1][0] : '';
-
-      if (currentKey.startsWith('+') && previousKey.startsWith('-')) {
-        if (currentKey.slice(2) === previousKey.slice(2)) {
-          return `Property ${currentKey.slice(2)} was updated. From ${_.isObject(previousValue) ? '[complex value]' : previousValue} to ${currentValue}`;
-        }
+    const values = currentNode.map((node) => {
+      let string;
+      if (node.type === 'deleted') {
+        string = `${indent}- ${node.key}: ${node.value}`;
+      } else if (node.type === 'added') {
+        string = `${indent}+ ${node.key}: ${node.value}`;
+      } else if (node.type === 'changed') {
+        string = `${indent}- ${node.key}: ${node.value.previousValue}\n${indent}+ ${node.key}: ${node.value.currentValue}`;
+      } else if (node.type === 'unchanged') {
+        string = `${indent}  ${node.key}: ${node.value}`;
+      } else if (node.type === '') {
+        string = `${indent}  ${node.key}: ${iter(node.value, depth + 2)}`;
+      } else {
+        string = `${indent}  ${node.key}: ${node.value}`;
       }
-      if (currentKey.startsWith('+')) {
-        return `Property ${currentKey.slice(2)} was added with value: ${_.isObject(currentValue) ? '[complex value]' : currentValue}`;
-      }
-      if (currentKey.startsWith('-') && !nextKey.includes(currentKey.slice(2))) {
-        return `Property ${currentKey.slice(2)} was removed`;
-      }
-      if (!(currentKey.startsWith('+') || currentKey.startsWith('-')) && _.isObject(currentValue)) {
-        iter(currentValue);
-      }
-      return '';
+      return string;
     });
-    console.log(valuesArray.filter((array) => array));
+    return ['{', ...values, `${bracketIndent}}`].join('\n');
   };
-  return iter(obj);
+  return iter(tree);
 };
 
-export default (filePath1, filePath2) => {
+export default (filePath1, filePath2, format = stylish) => {
   const obj1 = parseFiles(filePath1);
   const obj2 = parseFiles(filePath2);
 
@@ -89,5 +72,7 @@ export default (filePath1, filePath2) => {
   };
 
   const resultTree = getDiff(obj1, obj2);
-  return resultTree;
+  // return resultTree;
+  const formatedTree = format(resultTree);
+  return formatedTree;
 };
