@@ -80,6 +80,7 @@ export default (filePath1, filePath2) => {
         if (firstObj[key] === secondObj[key]) {
           node.key = key;
           node.type = 'unchanged';
+          node.value = secondObj[key];
         }
       }
       return node;
