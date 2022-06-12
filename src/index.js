@@ -1,26 +1,25 @@
 import _ from 'lodash';
 import parseFiles from './parsers.js';
 
-export const stylish = (tree, replacer = '  ', replacersCount = 1) => {
+export const stylish = (tree, replacer = '    ', replacersCount = 1) => {
   const iter = (currentNode, depth = 1) => {
     const indent = replacer.repeat(depth * replacersCount);
     const bracketIndent = replacer.repeat((depth - 1) * replacersCount);
     const values = currentNode.map((node) => {
-      let string;
-      if (node.type === 'deleted') {
-        string = `${indent}- ${node.key}: ${node.value}`;
-      } else if (node.type === 'added') {
-        string = `${indent}+ ${node.key}: ${node.value}`;
-      } else if (node.type === 'changed') {
-        string = `${indent}- ${node.key}: ${node.value.previousValue}\n${indent}+ ${node.key}: ${node.value.currentValue}`;
-      } else if (node.type === 'unchanged') {
-        string = `${indent}  ${node.key}: ${node.value}`;
-      } else if (node.type === '') {
-        string = `${indent}  ${node.key}: ${iter(node.value, depth + 2)}`;
-      } else {
-        string = `${indent}  ${node.key}: ${node.value}`;
+      switch (node.type) {
+        case 'deleted':
+          return `${indent}- ${node.key}: ${node.value}`;
+        case 'added':
+          return `${indent}+ ${node.key}: ${node.value}`;
+        case 'changed':
+          return `${indent}- ${node.key}: ${node.value.previousValue}\n${indent}+ ${node.key}: ${node.value.currentValue}`;
+        case 'unchanged':
+          return `${indent}  ${node.key}: ${node.value}`;
+        case '':
+          return `${indent}  ${node.key}: ${iter(node.value, depth + 1)}`;
+        default:
+          throw new Error('Wrong node.type');
       }
-      return string;
     });
     return ['{', ...values, `${bracketIndent}}`].join('\n');
   };
