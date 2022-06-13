@@ -1,24 +1,25 @@
 import _ from 'lodash';
 import parseFiles from './parsers.js';
 
-export const stylish = (tree, replacer = '    ', replacersCount = 1) => {
+export const stylish = (tree, replacer = '  ', replacersCount = 2) => {
   const iter = (currentNode, depth = 1) => {
     const indent = replacer.repeat(depth * replacersCount);
+    const plusMinusIndent = replacer.repeat(depth * replacersCount - 1);
     const bracketIndent = replacer.repeat((depth - 1) * replacersCount);
     const values = currentNode.map((node) => {
       switch (node.type) {
         case 'deleted':
-          return `${indent}- ${node.key}: ${node.value}`;
+          return `${plusMinusIndent}- ${node.key}: ${_.isObject(node.value) ? iter(Object.entries(node.value), depth + 1) : node.value}`;
         case 'added':
-          return `${indent}+ ${node.key}: ${node.value}`;
+          return `${plusMinusIndent}+ ${node.key}: ${_.isObject(node.value) ? iter(Object.entries(node.value), depth + 1) : node.value}`;
         case 'changed':
-          return `${indent}- ${node.key}: ${node.value.previousValue}\n${indent}+ ${node.key}: ${node.value.currentValue}`;
+          return `${plusMinusIndent}- ${node.key}: ${_.isObject(node.value.previousValue) ? iter(Object.entries(node.value.previousValue), depth + 1) : node.value.previousValue}\n${plusMinusIndent}+ ${node.key}: ${_.isObject(node.value.currentValue) ? iter(Object.entries(node.value.currentValue), depth + 1) : node.value.currentValue}`;
         case 'unchanged':
-          return `${indent}  ${node.key}: ${node.value}`;
+          return `${indent}${node.key}: ${_.isObject(node.value) ? iter(Object.entries(node.value), depth + 1) : node.value}`;
         case '':
-          return `${indent}  ${node.key}: ${iter(node.value, depth + 1)}`;
+          return `${indent}${node.key}: ${iter(node.value, depth + 1)}`;
         default:
-          throw new Error('Wrong node.type');
+          return `${indent}${node[0]}: ${_.isObject(node[1]) ? iter(Object.entries(node[1]), depth + 1) : node[1]}`;
       }
     });
     return ['{', ...values, `${bracketIndent}}`].join('\n');
