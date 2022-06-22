@@ -1,6 +1,31 @@
 import _ from 'lodash';
 import parseFiles from './parsers.js';
 
+export const plain = (tree) => {
+  const strings = tree.flatMap((node) => {
+    let string = '';
+    switch (node.type) {
+      case 'deleted':
+        string = `Property '${node.key}' was removed`;
+        break;
+      case 'added':
+        string = `Property '${node.key}' was added with value: ${_.isObject(node.value) ? '[complex value]' : node.value}`;
+        break;
+      case 'changed':
+        string = `Property '${node.key}' was updated. From ${_.isObject(node.value.previousValue) ? '[complex value]' : node.value.previousValue} to ${_.isObject(node.value.currentValue) ? '[complex value]' : node.value.currentValue}`;
+        break;
+      case '':
+        string = plain(node.value);
+        break;
+      default:
+        string = '';
+    }
+    return string;
+  });
+  const result = strings.filter((string) => string);
+  return result.join('\n');
+};
+
 export const stylish = (tree, replacer = '  ', replacersCount = 2) => {
   const iter = (currentNode, depth = 1) => {
     const indent = replacer.repeat(depth * replacersCount);
@@ -72,7 +97,7 @@ export default (filePath1, filePath2, format = stylish) => {
   };
 
   const resultTree = getDiff(obj1, obj2);
-  // return resultTree;
-  const formatedTree = format(resultTree);
-  return formatedTree;
+  return resultTree;
+  // const formatedTree = format(resultTree);
+  // return formatedTree;
 };
