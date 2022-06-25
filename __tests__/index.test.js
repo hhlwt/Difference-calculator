@@ -31,3 +31,13 @@ test('compare yml PLAIN', () => {
   const expectedYml = readFile('expected_file_plain.txt');
   expect(genDiff('./__fixtures__/file3.yml', './__fixtures__/file4.yml', plain)).toBe(expectedYml);
 });
+
+test('compare json JSON', () => {
+  const expectedJson = readFile('expected_file_json.txt');
+  expect(genDiff('./__fixtures__/file1.json', './__fixtures__/file2.json', JSON.stringify)).toBe(expectedJson);
+});
+
+test('compare yml JSON', () => {
+  const expectedYml = readFile('expected_file_json.txt');
+  expect(genDiff('./__fixtures__/file3.yml', './__fixtures__/file4.yml', JSON.stringify)).toBe(expectedYml);
+});

@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import parseFiles from './parsers.js';
+import chooseFormater from '../formatters/index.js';
 
 export default (filePath1, filePath2, format) => {
   const obj1 = parseFiles(filePath1);
@@ -40,7 +41,6 @@ export default (filePath1, filePath2, format) => {
   };
 
   const resultTree = getDiff(obj1, obj2);
-  // return resultTree;
-  const formatedTree = format(resultTree);
+  const formatedTree = chooseFormater(resultTree, format);
   return formatedTree;
 };

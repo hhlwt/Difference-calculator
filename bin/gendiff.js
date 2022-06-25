@@ -18,8 +18,11 @@ program
       case 'plain':
         console.log(genDiff(filepath1, filepath2, plain));
         break;
+      case 'json':
+        console.log(genDiff(filepath1, filepath2, JSON.stringify));
+        break;
       default:
-        console.log(JSON.stringify((genDiff(filepath1, filepath2, stylish)), null, 4));
+        console.log((genDiff(filepath1, filepath2, stylish)));
     }
   })
   .parse(process.argv);
