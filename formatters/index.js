@@ -3,12 +3,12 @@ import stylish from './stylish.js';
 
 const chooseFormater = (diff, format) => {
   switch (format) {
-    case plain:
+    case 'plain':
       return plain(diff);
-    case stylish:
-      return stylish(diff);
-    default:
+    case 'json':
       return JSON.stringify(diff);
+    default:
+      return stylish(diff);
   }
 };
 

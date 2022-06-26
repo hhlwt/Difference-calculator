@@ -14,4 +14,11 @@
 </ul>
 <hr>
 <h2>Examples usage:</h2>
+</h3>Compare json files using stylish format</h3>
 <a href="https://asciinema.org/a/HR0BpVo6Hlrnn9RpBglmt7WPJ" target="_blank"><img src="https://asciinema.org/a/HR0BpVo6Hlrnn9RpBglmt7WPJ.svg" /></a>
+</h3>Compare yml files with nested structure using stylish format</h3>
+<a href="https://asciinema.org/a/YRivxM5HDfp7gXIkm3kqxyKUl" target="_blank"><img src="https://asciinema.org/a/YRivxM5HDfp7gXIkm3kqxyKUl.svg" /></a>
+</h3>Compare json files with nested structure using plain format</h3>
+<a href="https://asciinema.org/a/yUn8Mgb2UpG5Z5Zkzify78ftN" target="_blank"><img src="https://asciinema.org/a/yUn8Mgb2UpG5Z5Zkzify78ftN.svg" /></a>
+</h3>Compare json files with nested structure using json format</h3>
+<a href="https://asciinema.org/a/hD4KBr5wu12p8AoKJtnwKtKuc" target="_blank"><img src="https://asciinema.org/a/hD4KBr5wu12p8AoKJtnwKtKuc.svg" /></a>

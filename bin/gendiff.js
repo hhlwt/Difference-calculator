@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import genDiff from '../src/index.js';
-import stylish from '../formatters/stylish.js';
-import plain from '../formatters/plain.js';
 
 const program = new Command();
 
@@ -16,13 +14,13 @@ program
     const { format } = option;
     switch (format) {
       case 'plain':
-        console.log(genDiff(filepath1, filepath2, plain));
+        console.log(genDiff(filepath1, filepath2, 'plain'));
         break;
       case 'json':
-        console.log(genDiff(filepath1, filepath2, JSON.stringify));
+        console.log(genDiff(filepath1, filepath2, 'json'));
         break;
       default:
-        console.log((genDiff(filepath1, filepath2, stylish)));
+        console.log((genDiff(filepath1, filepath2, 'stylish')));
     }
   })
   .parse(process.argv);
