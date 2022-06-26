@@ -1,22 +1,15 @@
-import fs from 'fs';
 import yaml from 'js-yaml';
-import path from 'path';
 
-const parseFiles = (filePath) => {
-  const format = path.extname(filePath);
-  const data = fs.readFileSync(filePath, 'utf-8');
-
-  let parser;
-  if (format === '.json' || format === '') {
-    parser = JSON.parse;
-  } else if (format === 'yml' || format === 'yaml') {
-    parser = yaml.load;
+const parseFiles = (data, format) => {
+  switch (format) {
+    case '.json':
+      return JSON.parse(data);
+    case '.yml':
+    case '.yaml':
+      return yaml.load(data);
+    default:
+      return new Error('Unknown extention');
   }
-
-  if (parser === yaml.load) {
-    return yaml.load(data);
-  }
-  return JSON.parse(data);
 };
 
 export default parseFiles;
