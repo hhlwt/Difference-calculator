@@ -2,18 +2,14 @@ import plain from './plain.js';
 import stylish from './stylish.js';
 
 const chooseFormater = (diff, format) => {
-  let result;
   switch (format) {
     case plain:
-      result = plain(diff);
-      break;
+      return plain(diff);
     case stylish:
-      result = stylish(diff);
-      break;
+      return stylish(diff);
     default:
-      result = JSON.stringify(diff);
+      return JSON.stringify(diff);
   }
-  return result;
 };
 
 export default chooseFormater;

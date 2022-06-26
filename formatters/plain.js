@@ -4,29 +4,21 @@ const plain = (tree) => {
   const iter = (node, path) => {
     const strings = node.flatMap((item) => {
       const newPath = `${path}.${item.key}`;
-      let string = '';
-      let value1;
-      let value2;
+      const addedValue = _.isObject(item.value) ? '[complex value]' : item.value;
+      const changedValue1 = _.isObject(item.value.value1) ? '[complex value]' : item.value.value1;
+      const changedValue2 = _.isObject(item.value.value2) ? '[complex value]' : item.value.value2;
       switch (item.type) {
         case 'removed':
-          string = `Property '${newPath.slice(1)}' was removed`;
-          break;
+          return `Property '${newPath.slice(1)}' was removed`;
         case 'added':
-          value1 = _.isObject(item.value) ? '[complex value]' : item.value;
-          string = `Property '${newPath.slice(1)}' was added with value: ${typeof value1 === 'string' && value1 !== '[complex value]' ? `'${value1}'` : `${value1}`}`;
-          break;
+          return `Property '${newPath.slice(1)}' was added with value: ${typeof addedValue === 'string' && addedValue !== '[complex value]' ? `'${addedValue}'` : `${addedValue}`}`;
         case 'changed':
-          value1 = _.isObject(item.value.value1) ? '[complex value]' : item.value.value1;
-          value2 = _.isObject(item.value.value2) ? '[complex value]' : item.value.value2;
-          string = `Property '${newPath.slice(1)}' was updated. From ${typeof value1 === 'string' && value1 !== '[complex value]' ? `'${value1}'` : `${value1}`} to ${typeof value2 === 'string' && value2 !== '[complex value]' ? `'${value2}'` : `${value2}`}`;
-          break;
+          return `Property '${newPath.slice(1)}' was updated. From ${typeof changedValue1 === 'string' && changedValue1 !== '[complex value]' ? `'${changedValue1}'` : `${changedValue1}`} to ${typeof changedValue2 === 'string' && changedValue2 !== '[complex value]' ? `'${changedValue2}'` : `${changedValue2}`}`;
         case 'nested':
-          string = iter(item.value, newPath);
-          break;
+          return iter(item.value, newPath);
         default:
-          string = '';
+          return '';
       }
-      return string;
     });
     return strings;
   };
