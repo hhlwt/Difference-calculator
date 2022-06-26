@@ -16,11 +16,11 @@ export default (filePath1, filePath2, format) => {
 
     const diffObj = sortedKeys.reduce((acc, key) => {
       const nodeDiff = {};
-      if (!Object.hasOwn(firstObj, key)) {
+      if (!_.has(firstObj, key)) {
         nodeDiff.key = key;
         nodeDiff.type = 'added';
         nodeDiff.value = secondObj[key];
-      } else if (!Object.hasOwn(secondObj, key)) {
+      } else if (!_.has(secondObj, key)) {
         nodeDiff.key = key;
         nodeDiff.type = 'removed';
         nodeDiff.value = firstObj[key];
