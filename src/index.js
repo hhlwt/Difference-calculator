@@ -15,30 +15,17 @@ export default (filePath1, filePath2, format) => {
     const sortedKeys = _.uniq(_.sortBy([...firstObjKeys, ...secondObjKeys]));
 
     const diffObj = sortedKeys.reduce((acc, key) => {
-      const nodeDiff = {};
       if (!_.has(firstObj, key)) {
-        nodeDiff.key = key;
-        nodeDiff.type = 'added';
-        nodeDiff.value = secondObj[key];
-      } else if (!_.has(secondObj, key)) {
-        nodeDiff.key = key;
-        nodeDiff.type = 'removed';
-        nodeDiff.value = firstObj[key];
-      } else if (firstObj[key] === secondObj[key]) {
-        nodeDiff.key = key;
-        nodeDiff.type = 'unchanged';
-        nodeDiff.value = secondObj[key];
-      } else if (_.isObject(firstObj[key]) && _.isObject(secondObj[key])) {
+        return [...acc, { key, type: 'added', value: secondObj[key] }];
+      } if (!_.has(secondObj, key)) {
+        return [...acc, { key, type: 'removed', value: firstObj[key] }];
+      } if (firstObj[key] === secondObj[key]) {
+        return [...acc, { key, type: 'unchanged', value: secondObj[key] }];
+      } if (_.isObject(firstObj[key]) && _.isObject(secondObj[key])) {
         const objValueDiff = getDiff(firstObj[key], secondObj[key]);
-        nodeDiff.key = key;
-        nodeDiff.type = 'nested';
-        nodeDiff.value = objValueDiff;
-      } else {
-        nodeDiff.key = key;
-        nodeDiff.type = 'changed';
-        nodeDiff.value = { value1: firstObj[key], value2: secondObj[key] };
+        return [...acc, { key, type: 'nested', value: objValueDiff }];
       }
-      return [...acc, nodeDiff];
+      return [...acc, { key, type: 'changed', value: { value1: firstObj[key], value2: secondObj[key] } }];
     }, []);
 
     return diffObj;
