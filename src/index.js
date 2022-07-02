@@ -2,7 +2,7 @@ import _ from 'lodash';
 import path from 'path';
 import fs from 'fs';
 import parseFiles from './parsers.js';
-import chooseFormater from '../formatters/index.js';
+import chooseFormater from './formatters/index.js';
 
 export default (filePath1, filePath2, format) => {
   const [format1, format2] = [path.extname(filePath1), path.extname(filePath2)];
