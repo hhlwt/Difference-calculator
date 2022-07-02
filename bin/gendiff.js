@@ -9,10 +9,8 @@ program
   .version('0.0.1')
   .arguments('<filepath1> <filepath2>')
   .option('-f, --format <type>', 'output format', 'stylish')
-  .action((filepath1, filepath2) => {
-    const option = program.opts();
-    const { format } = option;
-    switch (format) {
+  .action((filepath1, filepath2, options) => {
+    switch (options.format) {
       case 'plain':
         console.log(genDiff(filepath1, filepath2, 'plain'));
         break;
