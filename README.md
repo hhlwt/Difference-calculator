@@ -9,8 +9,8 @@
 <p>A difference calculator is a program that determines the difference between two data structures.</p>
 <hr>
 <ul>Utility features:
-  <li>The possibility of different input formats: yaml, json</li>
-  <li>Report generation as plain text, stylish and json</li>
+  <li>The possibility of different input formats: yaml, json.</li>
+  <li>Report generation as plain text, stylish and json.</li>
 </ul>
 <hr>
 <h2>Examples usage:</h2>
