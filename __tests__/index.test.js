@@ -11,12 +11,12 @@ const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', 
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 
 test.each([
-  ['./__fixtures__/file1.json', './__fixtures__/file2.json', 'stylish', readFile('expected_file_stylish.txt')],
-  ['./__fixtures__/file3.yml', './__fixtures__/file4.yml', 'stylish', readFile('expected_file_stylish.txt')],
-  ['./__fixtures__/file1.json', './__fixtures__/file2.json', 'plain', readFile('expected_file_plain.txt')],
-  ['./__fixtures__/file3.yml', './__fixtures__/file4.yml', 'plain', readFile('expected_file_plain.txt')],
-  ['./__fixtures__/file1.json', './__fixtures__/file2.json', 'json', readFile('expected_file_json.txt')],
-  ['./__fixtures__/file3.yml', './__fixtures__/file4.yml', 'json', readFile('expected_file_json.txt')],
+  ['./__fixtures__/file1.json', './__fixtures__/file2.json', 'stylish', 'expected_file_stylish.txt'],
+  ['./__fixtures__/file3.yml', './__fixtures__/file4.yml', 'stylish', 'expected_file_stylish.txt'],
+  ['./__fixtures__/file1.json', './__fixtures__/file2.json', 'plain', 'expected_file_plain.txt'],
+  ['./__fixtures__/file3.yml', './__fixtures__/file4.yml', 'plain', 'expected_file_plain.txt'],
+  ['./__fixtures__/file1.json', './__fixtures__/file2.json', 'json', 'expected_file_json.txt'],
+  ['./__fixtures__/file3.yml', './__fixtures__/file4.yml', 'json', 'expected_file_json.txt'],
 ])('compare (%s, %s) with %s formatter', (first, second, format, expected) => {
-  expect(genDiff(first, second, format)).toBe(expected);
+  expect(genDiff(first, second, format)).toBe(readFile(expected));
 });
