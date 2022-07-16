@@ -8,6 +8,13 @@
 <h1>Difference calculator</h1>
 <p>A difference calculator is a program that determines the difference between two data structures.</p>
 <hr>
+<h2>Installation</h2>
+<ul>
+  <li>git clone git@github.com:hhlwt/frontend-project-lvl2.git</li>
+  <li>make install</li>
+  <li>sudo npm link</li>
+</ul>
+<hr>
 <ul>Utility features:
   <li>The possibility of different input formats: yaml, json.</li>
   <li>Report generation as plain text, stylish and json.</li>

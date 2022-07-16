@@ -3,7 +3,7 @@ import _ from 'lodash';
 const stylish = (tree, replacer = '  ', replacersCount = 2) => {
   const iter = (subTree, depth = 1) => {
     const indent = replacer.repeat(replacersCount * depth);
-    const plusMinusIndent = replacer.repeat(replacersCount * depth - 1);
+    const signIndent = replacer.repeat(replacersCount * depth - 1);
     const bracketIndent = replacer.repeat(replacersCount * depth - replacersCount);
 
     const stringifyValue = (value, level) => {
@@ -16,11 +16,11 @@ const stylish = (tree, replacer = '  ', replacersCount = 2) => {
     const strings = subTree.map((node) => {
       switch (node.type) {
         case 'added':
-          return `${plusMinusIndent}+ ${node.key}: ${stringifyValue(node.value, depth)}`;
+          return `${signIndent}+ ${node.key}: ${stringifyValue(node.value, depth)}`;
         case 'removed':
-          return `${plusMinusIndent}- ${node.key}: ${stringifyValue(node.value, depth)}`;
+          return `${signIndent}- ${node.key}: ${stringifyValue(node.value, depth)}`;
         case 'changed':
-          return `${plusMinusIndent}- ${node.key}: ${stringifyValue(node.value1, depth)}\n${plusMinusIndent}+ ${node.key}: ${stringifyValue(node.value2, depth)}`;
+          return `${signIndent}- ${node.key}: ${stringifyValue(node.value1, depth)}\n${signIndent}+ ${node.key}: ${stringifyValue(node.value2, depth)}`;
         case 'unchanged':
           return `${indent}${node.key}: ${stringifyValue(node.value, depth)}`;
         case 'nested':
