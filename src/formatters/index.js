@@ -7,7 +7,7 @@ const format = (diff, formatName) => {
       return plain(diff);
     case 'json':
       return JSON.stringify(diff);
-    case '':
+    case undefined:
       return stylish(diff);
     case 'stylish':
       return stylish(diff);
