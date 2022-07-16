@@ -1,28 +1,37 @@
 import _ from 'lodash';
 
-const stylish = (tree, replacer = '  ', replacersCount = 1) => {
+const stylish = (tree, replacer = '  ', replacersCount = 2) => {
   const iter = (subTree, depth = 1) => {
     const indent = replacer.repeat(replacersCount * depth);
-    const bracketIndent = replacer.repeat(replacersCount * (depth - 1));
+    const plusMinusIndent = replacer.repeat(replacersCount * depth - 1);
+    const bracketIndent = replacer.repeat(replacersCount * depth - replacersCount);
+
+    const stringifyValue = (value, level) => {
+      if (_.isObject(value)) {
+        return iter(Object.entries(value), level + 1);
+      }
+      return value;
+    };
+
     const strings = subTree.map((node) => {
       switch (node.type) {
         case 'added':
-          return `${indent}+ ${node.key}: ${_.isObject(node.value) ? iter(Object.entries(node.value), depth + 2) : node.value}`;
+          return `${plusMinusIndent}+ ${node.key}: ${stringifyValue(node.value, depth)}`;
         case 'removed':
-          return `${indent}- ${node.key}: ${_.isObject(node.value) ? iter(Object.entries(node.value), depth + 2) : node.value}`;
+          return `${plusMinusIndent}- ${node.key}: ${stringifyValue(node.value, depth)}`;
         case 'changed':
-          return `${indent}- ${node.key}: ${_.isObject(node.value1) ? iter(Object.entries(node.value1), depth + 2) : node.value1}\n${indent}+ ${node.key}: ${_.isObject(node.value2) ? iter(Object.entries(node.value2), depth + 2) : node.value2}`;
+          return `${plusMinusIndent}- ${node.key}: ${stringifyValue(node.value1, depth)}\n${plusMinusIndent}+ ${node.key}: ${stringifyValue(node.value2, depth)}`;
         case 'unchanged':
-          return `${indent}  ${node.key}: ${_.isObject(node.value) ? iter(Object.entries(node.value), depth + 2) : node.value}`;
+          return `${indent}${node.key}: ${stringifyValue(node.value, depth)}`;
         case 'nested':
-          return `${indent}  ${node.key}: ${iter(node.children, depth + 2)}`;
+          return `${indent}${node.key}: ${iter(node.children, depth + 1)}`;
         default:
-          return `${indent}  ${node[0]}: ${_.isObject(node[1]) ? iter(Object.entries(node[1]), depth + 2) : node[1]}`;
+          return `${indent}${node[0]}: ${_.isObject(node[1]) ? iter(Object.entries(node[1]), depth + 1) : node[1]}`;
       }
     });
     return ['{', ...strings, `${bracketIndent}}`].join('\n');
   };
-  return iter(tree);
+  return iter(tree, 1);
 };
 
 export default stylish;
