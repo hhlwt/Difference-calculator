@@ -16,6 +16,7 @@
 </ul>
 <hr>
 <h2>Usage:</h2>
+
 ```
 Usage: gendiff [options] <filepath1> <filepath2>
 Options:
@@ -23,8 +24,10 @@ Options:
   -f, --format <type>  output format (default: "stylish")
   -h, --help           display help for command
 ```
+
 <hr>
-<ul>Utility features:
+<h2>Utility features:</h2>
+<ul>
   <li>The possibility of different input formats: yaml, json.</li>
   <li>Report generation as plain text, stylish and json.</li>
 </ul>
