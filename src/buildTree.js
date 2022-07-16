@@ -25,11 +25,3 @@ const buildTree = (firstItem, secondItem) => {
 };
 
 export default buildTree;
-
-// if (firstItem[key] === secondItem[key]) {
-//   return { key, type: 'unchanged', value: secondItem[key] };
-// } if (_.isObject(firstItem[key]) && _.isObject(secondItem[key])) {
-//   const children = buildTree(firstItem[key], secondItem[key]);
-//   return { key, type: 'nested', children };
-// }
-// return { key, type: 'changed', value: { value1: firstItem[key], value2: secondItem[key] } };

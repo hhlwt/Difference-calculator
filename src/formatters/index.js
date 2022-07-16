@@ -7,8 +7,11 @@ const format = (diff, formatName) => {
       return plain(diff);
     case 'json':
       return JSON.stringify(diff);
-    default:
+    case '':
+    case 'stylish':
       return stylish(diff);
+    default:
+      throw new Error(`Format name ${formatName} is not supported.`);
   }
 };
 
