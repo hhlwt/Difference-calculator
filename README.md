@@ -32,7 +32,7 @@ Options:
   <li>Report generation as plain text, stylish and json.</li>
 </ul>
 <hr>
-<h2>Examples usage:</h2>
+<h2>Examples of usage:</h2>
 </h3>Compare json files using stylish format</h3>
 <a href="https://asciinema.org/a/HR0BpVo6Hlrnn9RpBglmt7WPJ" target="_blank"><img src="https://asciinema.org/a/HR0BpVo6Hlrnn9RpBglmt7WPJ.svg" /></a>
 </h3>Compare yml files with nested structure using stylish format</h3>
