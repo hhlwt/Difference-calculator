@@ -26,7 +26,9 @@ const stylish = (tree, replacer = '  ', replacersCount = 2) => {
         case 'nested':
           return `${indent}${node.key}: ${iter(node.children, depth + 1)}`;
         default:
-          return `${indent}${node[0]}: ${_.isObject(node[1]) ? iter(Object.entries(node[1]), depth + 1) : node[1]}`; // Этот кейс на случай если value у ноды с типом added или removed - это объект. Например value у ноды group3 просто будет потеряно, если мы уберем этот кейс. Думал, как это можно по другому сделать, но так ничего и не придумал :)
+          // eslint-disable-next-line no-case-declarations
+          const [key, value] = node;
+          return `${indent}${key}: ${stringifyValue(value, depth)}`; // Этот кейс на случай если value у ноды с типом added или removed - это объект. Например value у ноды group3 просто будет потеряно, если мы уберем этот кейс. Думал, как это можно по другому сделать, но так ничего и не придумал :)
       }
     });
     return ['{', ...strings, `${bracketIndent}}`].join('\n');
