@@ -1,7 +1,8 @@
 import _ from 'lodash';
 
 const buildTree = (firstItem, secondItem) => {
-  const [firstItemKeys, secondItemKeys] = [Object.keys(firstItem), Object.keys(secondItem)];
+  const firstItemKeys = Object.keys(firstItem);
+  const secondItemKeys = Object.keys(secondItem);
   const sortedKeys = _.uniq(_.sortBy([...firstItemKeys, ...secondItemKeys]));
 
   const diffTree = sortedKeys.map((key) => {
