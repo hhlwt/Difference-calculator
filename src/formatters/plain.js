@@ -4,7 +4,7 @@ const stringify = (value) => {
   if (_.isObject(value)) {
     return '[complex value]';
   }
-  return (typeof value === 'string' ? `'${value}'` : value); // Не до конца понял про применение String() в данном случае. Увидел, что интерполяция в случае false тернарника тут лишняя - убрал ее.
+  return (typeof value === 'string' ? `'${value}'` : value); // Не до конца понял про применение String() в данном случае. Если возвращаем просто String(value) - то нет кавычек в выводе, где они нужны.
 };
 
 const plain = (tree) => {
