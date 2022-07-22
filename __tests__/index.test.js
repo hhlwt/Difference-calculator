@@ -18,4 +18,5 @@ test.each(['yml', 'json'])('gendiff %s', (format) => {
   expect(genDiff(filePath1, filePath2, 'stylish')).toBe(readFile('expected_file_stylish.txt'));
   expect(genDiff(filePath1, filePath2, 'plain')).toBe(readFile('expected_file_plain.txt'));
   expect(genDiff(filePath1, filePath2, 'json')).toBe(readFile('expected_file_json.txt'));
+  expect(() => genDiff(filePath1, filePath2, 'json')).not.toThrow();
 });
