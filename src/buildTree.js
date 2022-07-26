@@ -6,7 +6,7 @@ const buildTree = (firstItem, secondItem) => {
   const sortedKeys = _.uniq(_.sortBy([...firstItemKeys, ...secondItemKeys]));
 
   const diffTree = sortedKeys.map((key) => {
-    if (_.isObject(firstItem[key]) && _.isObject(secondItem[key])) {
+    if (_.isPlainObject(firstItem[key]) && _.isPlainObject(secondItem[key])) {
       const children = buildTree(firstItem[key], secondItem[key]);
       return { key, type: 'nested', children };
     }

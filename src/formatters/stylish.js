@@ -4,7 +4,7 @@ const getIndent = (depth, replacersCount = 4) => ' '.repeat(depth * replacersCou
 const getBracketIndent = (depth, replacersCount = 4) => ' '.repeat(replacersCount * depth - replacersCount);
 
 const stringifyValue = (nodeValue, depth, iterFunc) => {
-  if (!_.isObject(nodeValue)) {
+  if (!_.isPlainObject(nodeValue)) {
     return String(nodeValue);
   }
   const result = Object.entries(nodeValue).map(([key, value]) => ({ key, value, type: 'unchanged' }));
