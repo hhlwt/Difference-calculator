@@ -4,17 +4,16 @@ const stringify = (value) => {
   if (_.isObject(value)) {
     return '[complex value]';
   }
-  return (typeof value === 'string' ? `'${value}'` : value); // Не до конца понял про применение String() в данном случае. Если возвращаем просто String(value) - то нет кавычек в выводе, где они нужны.
+  return (typeof value === 'string' ? `'${value}'` : String(value));
 };
 
 const plain = (tree) => {
   const iter = (node, path) => {
     const strings = node.flatMap((item) => {
       const newPath = [...path, item.key];
-      if (item.type === 'nested') {
-        return iter(item.children, newPath);
-      }
       switch (item.type) {
+        case 'nested':
+          return iter(item.children, newPath);
         case 'removed':
           return `Property '${newPath.join('.')}' was removed`;
         case 'added':
