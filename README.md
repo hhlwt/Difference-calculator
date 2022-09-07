@@ -10,7 +10,7 @@
 <hr>
 <h2>Installation:</h2>
 <ul>
-  <li>git clone git@github.com:hhlwt/frontend-project-lvl2.git</li>
+  <li>git clone git@github.com:hhlwt/Difference-calculator.git</li>
   <li>make install</li>
   <li>sudo npm link</li>
 </ul>
